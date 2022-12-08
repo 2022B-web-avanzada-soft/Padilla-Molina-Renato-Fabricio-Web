@@ -41,5 +41,40 @@ const write = function(path,nuevoContenido){
         }
     );
 }
-read("01-javascript/06-ejemplo.txt",'01-javascript/06-nuevo-archivo.txt');
-read("01-javascript/01-variables.js",'01-javascript/06-nuevo-archivo.txt');
+//read("01-javascript/06-ejemplo.txt",'01-javascript/06-nuevo-archivo.txt');
+//read("01-javascript/01-variables.js",'01-javascript/06-nuevo-archivo.txt');
+fs.readFile(
+    '06-ejemplo.txt',
+    'utf-8',
+    (errorLecturaPrimerArchivo, contenidoPrimerArchivo) => {
+        if(errorLecturaPrimerArchivo){
+            console.log("ERROR LEYENDO ARCHIVO", errorLecturaPrimerArchivo);
+        }else{
+            console.log("Contenido:", contenidoPrimerArchivo);
+            contenido = contenidoPrimerArchivo.toString();
+            fs.readFile(
+                '01-variables.js',
+                'utf-8',
+                (errorLecturaPrimerArchivo, contenidoPrimerArchivo) => {
+                    if(errorLecturaPrimerArchivo){
+                        console.log("ERROR LEYENDO ARCHIVO", errorLecturaPrimerArchivo);
+                    }else{
+                        console.log("Contenido:", contenidoPrimerArchivo);
+                        contenido += contenidoPrimerArchivo.toString();
+                        fs.writeFile(
+                            '06-nuevo-archivo.txt',
+                            contenido,
+                            (errorEscritura) => {
+                                if(errorEscritura){
+                                    console.log(errorEscritura);
+                                }else{
+                                    console.log(fs.readFileSync('06-nuevo-archivo.txt', "utf8"));
+                                }
+                            }
+                        );
+                    }
+                }
+            );
+        }
+    }
+);
