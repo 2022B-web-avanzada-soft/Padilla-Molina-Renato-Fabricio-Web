@@ -50,3 +50,24 @@ function ejercicio(path, contenido){
         )
 }
 ejercicio('06-ejemplo.txt','\nSe logro');
+
+
+// ASYNC AWAIT
+// Reglas
+// 1- Estar dentro de una funcion
+// 2- Agregar la palabra async antes de la declaracion de la funcion
+// 3- Agregar la palabra await antes de la declaracion de la promesa
+// Cualquier funcion con async await se convierte en una promesa
+async function asyncAwaitUno(path, contenido){
+    //Si se saben que en la promesa puede haber un reject usamos try catch
+    try{
+        const respuestaContenido = await leer(path);
+        await escribir(path, respuestaContenido+contenido);
+    }catch (e) {
+        console.log(e);
+    }
+}
+asyncAwaitUno('06-ejemplo.txt','\nSe logro de nuevo');
+const asyncAwaitDos = function(){}
+
+const asyncAwaitTres = ()=>{}
