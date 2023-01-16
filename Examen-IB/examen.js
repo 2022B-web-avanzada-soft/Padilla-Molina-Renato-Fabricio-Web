@@ -45,17 +45,55 @@ async function procesar(path){
         console.log(e);
     }
 }
-async function leerOpcion(){
+async function leerConfirm(){
     try {
         const respuesta = await inquirer
             .prompt([
                 {
-                    type: 'number',
-                    name: 'opcion',
-                    message: 'Ingresa la opcion...'
+                    type: 'confirm',
+                    name: 'biblioteca',
+                    message: ''
                 }
             ])
-            return respuesta['opcion'];
+        return respuesta['biblioteca'];
+    }catch (e) {
+        console.log(e);
+    }
+}
+async function leerFecha(){
+    try {
+        const respuesta = await inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'fecha',
+                    message: '...',
+                    validate: function(value) {
+                        const fecha = new Date(value);
+                        if (!isNaN(fecha.getTime())) {
+                            return true;
+                        } else {
+                            return 'Ingrese una fecha valida';
+                        }
+                    }
+                }
+            ])
+            return respuesta['fecha'];
+    }catch (e) {
+        console.log(e);
+    }
+}
+async function leerUpdate(){
+    try {
+        const respuesta = await inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'opcion',
+                    message: '...'
+                }
+            ])
+        return respuesta['opcion'];
     }catch (e) {
         console.log(e);
     }
@@ -100,10 +138,12 @@ async function main(){
     while (opcion!=5) {
         console.log('\tFACULTADES');
         console.log('1.- Leer\n2.- Crear\n3.- Modificar\n4.- Eliminar\n5.- Salir');
-        opcion = await leerOpcion();
+        console.log('Ingresa la opcion...')
+        opcion = Number(await leerUpdate());
+        let facultades = null;
         switch (opcion) {
-            case 1:
-                const facultades = JSON.parse(await leer('Facultades.txt'));
+            case 1 :
+                facultades = JSON.parse(await leer('Facultades.txt'));
                 facultades.forEach(facultad => {
                     console.log('Nombre:',facultad['nombre']);
                     console.log('Numero de edificio:',facultad['edificio']);
@@ -114,9 +154,52 @@ async function main(){
                 break;
             case 2 :
                 await procesar('Facultades.txt');
+                console.log('CREADO');
+                break;
+            case 3 :
+                console.log('Ingrese el nombre de a facutad a modificar')
+                let modificar = await leerUpdate();
+                let encontrado = false;
+                facultades = JSON.parse(await leer('Facultades.txt'));
+                for (const facultad of facultades) {
+                    if (facultad['nombre']==modificar) {
+                        console.log('Actualizar numero de edificio');
+                        facultad['edificio'] = Number(await leerUpdate());
+                        console.log('Actualizar numero de alumnos');
+                        facultad['estudiantes'] = Number(await leerUpdate());
+                        console.log('Actualizar posee biblioteca');
+                        facultad['biblioteca'] = await leerConfirm();
+                        console.log('Actualizar fecha de fundacion');
+                        facultad['fecha'] = await leerFecha();
+                        escribir('Facultades.txt',JSON.stringify(facultades));
+                        console.log('ACTUALIZADO');
+                        encontrado = false;
+                        break;
+                    }else {
+                        encontrado = true;
+                    }
+                }
+                if (encontrado) {
+                    console.log('Facultad no encontrada')
+                }
+                break;
+            case 4 :
+                console.log('Ingrese el nombre de a facutad a eliminar')
+                facultades = JSON.parse(await leer('Facultades.txt'));
+                let eliminar = await leerUpdate();
+                let i = 0;
+                for (const facultad of facultades) {
+                    if (facultad['nombre'] === eliminar) {
+                        facultades.splice(i, 1);
+                        escribir('Facultades.txt',JSON.stringify(facultades));
+                        console.log('ELIMINADO');
+                        break;
+                    }
+                    i++;
+                }
+            default :
                 break;
         }
-
     }
 }
 main()
