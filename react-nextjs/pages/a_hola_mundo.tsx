@@ -13,9 +13,11 @@ const b_componente = () =>{
 export default b_componente*/
 import EstilosEjemplo from "../components/a_estilos/EstilosEjemplo";
 import Componente from "../components/b_componenetes/Componente";
+import Layout from "../components/Layout";
 export default function a_hola_mundo() {
     return (
         <>
+        <Layout title={'Hola Mundo'}>
             <h1>Hola Mundo</h1>
             <EstilosEjemplo></EstilosEjemplo>
             <Componente iteraciones={3}
@@ -26,6 +28,8 @@ export default function a_hola_mundo() {
             <Componente iteraciones={3}
                         url={'http://google.com'}
             ></Componente>
+        </Layout>
+
         </>
     )
 }
