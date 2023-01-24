@@ -1,1 +1,1 @@
-[{"nombre":"EPN","facultades":0,"estudiantes":0,"publica":true,"fecha":"02/02/1999","id":0}]
+[{"nombre":"EPN","edificio":0,"estudiantes":0,"biblioteca":true,"fecha":"02/02/1999","id":0}]
