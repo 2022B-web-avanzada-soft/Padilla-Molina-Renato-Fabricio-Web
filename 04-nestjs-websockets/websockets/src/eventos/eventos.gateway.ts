@@ -1,7 +1,7 @@
 import {ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway} from "@nestjs/websockets";
 import {Server, Socket} from 'socket.io';
 @WebSocketGateway(
-    8080, // Puerto donde esta escuchando el servidor de websockets
+    11202, // Puerto donde esta escuchando el servidor de websockets
     {
         cors: {
             origin: '*', // Habilitando la conexion desde cualquier IP
