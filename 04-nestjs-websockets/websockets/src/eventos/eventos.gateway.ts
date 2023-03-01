@@ -60,4 +60,23 @@ export class EventosGateway{
             .emit('escucharEventoMensajeSala', mensajeSala); // nombre del evento y datos a enviar
         return {mensaje: 'ok'}; // Callback
     }
+    @SubscribeMessage('comprarPropiedad') // Nombre del metodo para recibir eventos
+    devolverPropiedad(
+        @MessageBody()
+            message: {nombre: string, mensaje: string },
+        @ConnectedSocket()
+            socket: Socket // import {Server, Socket} from 'socket.io';
+    ) {
+        // backend
+        const mensajeSala = {
+            nombre: message.nombre,
+            mensaje: message.mensaje
+        };
+        socket.broadcast
+            .emit('escucharEventoPropiedad', //  Nombre evento que vamos a enviar a los clientes conectados
+                // OBJETO A ENVIAR
+                mensajeSala
+            );
+        return {mensaje: 'ok'}; // Callback del metodo "hola"
+    }
 }
