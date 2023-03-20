@@ -8,20 +8,20 @@ import {
     Param, Post, Put, Query,
     UnauthorizedException
 } from "@nestjs/common";
-import {UsuarioService} from "./usuario.service";
-import {UsuarioCreateDto} from "./dto/usuario-create.dto";
-import {UsuarioUpdateDto} from "./dto/usuario-update.dto";
+import {UniversidadService} from "./universidad.service";
+import {UniversidadCreateDto} from "./dto/universidad-create.dto";
+import {UniversidadUpdateDto} from "./dto/universidad-update.dto";
 import {validate} from "class-validator";
 import {FindManyOptions, FindOptionsWhere, Like} from "typeorm";
-import {UsuarioEntity} from "./usuario.entity";
+import {UniversidadEntity} from "./universidad.entity";
 
 @Controller('usuario')
 // http://localhost:3000/usuario/
 // @Controller('usuario/asd/qwe')
 // http://localhost:3000/usuario/asd/qwe
-export class UsuarioController{
+export class UniversidadController {
     constructor(
-        private readonly usuarioService: UsuarioService
+        private readonly usuarioService: UniversidadService
     ) {
     }
 
@@ -49,7 +49,7 @@ export class UsuarioController{
         @Param() params, // {id:1}
         @Body() bodyParams // {nombres:''....}
     ) {
-        const nuevoRegistro = new UsuarioUpdateDto();
+        const nuevoRegistro = new UniversidadUpdateDto();
         nuevoRegistro.nombres = bodyParams.nombres;
         nuevoRegistro.apellidos = bodyParams.apellidos;
         nuevoRegistro.rol = bodyParams.rol;
@@ -73,7 +73,7 @@ export class UsuarioController{
     async create(
         @Body() bodyParams // {nombres:''....}
     ) {
-        const nuevoRegistro = new UsuarioCreateDto();
+        const nuevoRegistro = new UniversidadCreateDto();
         nuevoRegistro.nombres = bodyParams.nombres;
         nuevoRegistro.apellidos = bodyParams.apellidos;
         nuevoRegistro.rol = bodyParams.rol;
@@ -94,7 +94,7 @@ export class UsuarioController{
     find(
         @Query() queryParams
     ) {
-        const consulta: FindManyOptions<UsuarioEntity> = {
+        const consulta: FindManyOptions<UniversidadEntity> = {
             relations: ['notas'],
             // select: ['id'], // Select
             // relations: { //  Relaciones
@@ -103,7 +103,7 @@ export class UsuarioController{
             skip: queryParams.skip ? +queryParams.skip : 0 , // 2 * 0 = 0 ; 2 * 1 = 2; 2 * 2 = 4;
             take: queryParams.take ? +queryParams.take : 10
         };
-        const consultaWhere = [] as FindOptionsWhere<UsuarioEntity>[]
+        const consultaWhere = [] as FindOptionsWhere<UniversidadEntity>[]
         if(queryParams.nombres){
             consultaWhere.push({
                 nombres: Like('%' + queryParams.nombres + '%'), // dr

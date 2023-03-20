@@ -2,7 +2,7 @@ import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {NotaEntity} from "../nota/nota.entity";
 
 @Entity('epn_usuario') // nombre tabla en la bdd
-export class UsuarioEntity{
+export class FacultadEntity {
     // id autogenerado
     @PrimaryGeneratedColumn()
     id: number;
